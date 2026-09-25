@@ -7,6 +7,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public int maxPlayers = 10;
     public static NetworkManager instance;
 
+    void Awake(){
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();

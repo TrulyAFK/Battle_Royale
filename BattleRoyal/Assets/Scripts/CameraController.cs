@@ -21,9 +21,11 @@ public class CameraController : MonoBehaviour
 
     void LateUpdate()
     {
-        rotX += Input.GetAxis("MouseX") * sensX;
-        rotY += Input.GetAxis("MosueY") * sensY;
-        rotY = Mathf.Clamp(rotY, minY, maxY);
+        //if(Cursor.lockState==CursorLockMode.Locked){
+            rotX += Input.GetAxis("Mouse X") * sensX;
+            rotY += Input.GetAxis("Mouse Y") * sensY;
+            rotY = Mathf.Clamp(rotY, minY, maxY);  
+        //}
         if (isSpectator)
         {
             transform.rotation = Quaternion.Euler(-rotX, rotY, 0);

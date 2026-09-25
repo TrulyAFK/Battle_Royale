@@ -38,6 +38,13 @@ MonoBehaviour:
   - ClickRpc
   - DestroyRpc
   - UpdateLobbyUI
+  - ImInGame
+  - Initialize
+  - SpawnPlayer
+  - DamageFlash
+  - Die
+  - TakeDamage
+  - SpawnBullet
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 0

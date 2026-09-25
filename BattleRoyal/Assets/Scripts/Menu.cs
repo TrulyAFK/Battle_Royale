@@ -78,7 +78,9 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnCreateButton()
     {
         NetworkManager.instance.CreateRoom(roomName.text);
+        SetScreen(lobby);
     }
+    
     //lobby screen functions
     public void OnJoinRoom()
     {
