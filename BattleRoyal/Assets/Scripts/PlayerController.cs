@@ -84,12 +84,30 @@ public class PlayerController : MonoBehaviourPun
     }
     [PunRPC]
     void Die(){
-
+        curHp = 0;
+        dead = true;
+        GameManager.instance.alaivePlayers--;
+        if (PhotonNetwork.IsMasterClient) { GameManager.instance.CheckWinCondition(); }
+        if (curAttackerId != 0)
+        {
+            GameManager.instance.GetPlayer(curAttackerId).photonView.RPC("AddKill", RpcTarget.All);
+            GetComponentInChildren<CameraController>().SetAsSpectator();
+            rig.isKinematic = true;
+            transform.position = new Vector3(0, -50, 0);
+        }
     }
 
     [PunRPC]//PlayerWeapon RPC call
     void SpawnBullet(Vector3 pos,Vector3 dir){
         GameObject bulletObj = Instantiate(weapon.bulletPrefab,pos,Quaternion.identity);
         bulletObj.transform.forward=dir;
+        Bullet bullet = bulletObj.GetComponent<Bullet>();
+        bullet.Initialize(weapon.daamage,weapon.range,id,photonView.IsMine);
+        bullet.rb.linearVelocity=dir*bullet.GetSpeed();
+    }
+    [PunRPC]
+    public void AddKill()
+    {
+        kills++;
     }
 }

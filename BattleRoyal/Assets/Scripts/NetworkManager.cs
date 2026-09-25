@@ -19,6 +19,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("Connected to master server.");
     }
+    public void ChanageScene(string sceneName)
+    {
+        PhotonNetwork.LoadLevel(sceneName);
+    }
     public void CreateRoom(string roomName)
     {
         RoomOptions options = new RoomOptions();

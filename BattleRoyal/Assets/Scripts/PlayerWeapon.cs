@@ -5,6 +5,7 @@ public class PlayerWeapon : MonoBehaviour
 {
     [Header("Stats")]
     public int daamage;
+    public float range;
     public int curAmmo;
     public int maxAmmo;
     public float bulletSpeed;
