@@ -4,7 +4,7 @@ using Photon.Realtime;
 public class PlayerWeapon : MonoBehaviour
 {
     [Header("Stats")]
-    public int daamage;
+    public int damage;
     public float range;
     public int curAmmo;
     public int maxAmmo;
@@ -22,7 +22,9 @@ public class PlayerWeapon : MonoBehaviour
     }
 
     public void TryShoot(){
-        if(curAmmo<= 0 || Time.time-lastShotTime<fireRate){return;}
+        Debug.Log("Try Shot");
+        if (curAmmo<= 0 || Time.time-lastShotTime<fireRate){return;}
+        Debug.Log("shooting");
         curAmmo--;
         lastShotTime=Time.time;
         //UI update

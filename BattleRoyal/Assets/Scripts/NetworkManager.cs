@@ -19,7 +19,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("Connected to master server.");
     }
-    public void ChanageScene(string sceneName)
+    [PunRPC]
+    public void ChangeScene(string sceneName)
     {
         PhotonNetwork.LoadLevel(sceneName);
     }

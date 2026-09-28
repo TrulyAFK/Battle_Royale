@@ -563,12 +563,12 @@ MonoBehaviour:
   jumpForce: 0.15
   rig: {fileID: 196958580266715640}
   id: 0
-  curHp: 0
-  maxHp: 0
+  curHp: 10
+  maxHp: 10
   kills: 0
   dead: 0
-  mr: {fileID: 0}
-  weapon: {fileID: 0}
+  mr: {fileID: 1174989768898208621}
+  weapon: {fileID: 3982727386729716479}
 --- !u!114 &1841266673907382863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -603,10 +603,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e15c5b02e0705e84a9750efc8c107071, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  daamage: 0
-  curAmmo: 0
-  maxAmmo: 0
-  bulletSpeed: 0
-  fireRate: 0
-  bulletPrefab: {fileID: 0}
+  damage: 1
+  range: 1
+  curAmmo: 5
+  maxAmmo: 5
+  bulletSpeed: 10
+  fireRate: 0.1
+  bulletPrefab: {fileID: 7600932256971633176, guid: 24c9e53a16ca2094a95013f52b436745, type: 3}
   bulletSpawnPos: {fileID: 4439007881474607624}

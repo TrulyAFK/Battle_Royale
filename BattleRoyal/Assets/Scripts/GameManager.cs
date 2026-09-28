@@ -55,6 +55,6 @@ public class GameManager : MonoBehaviourPun
     }
     void GoBackToMenu()
     {
-        NetworkManager.instance.ChanageScene("Menu");
+        NetworkManager.instance.ChangeScene("Menu");
     }
 }

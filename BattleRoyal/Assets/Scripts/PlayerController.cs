@@ -29,7 +29,10 @@ public class PlayerController : MonoBehaviourPun
         {
             TryJump();
         }
-        if(Input.GetMouseButtonDown(0)){weapon.TryShoot();}
+        if(Input.GetMouseButtonDown(0))
+        {
+            weapon.TryShoot();
+        }
     }
     void Move()
     {
@@ -102,7 +105,7 @@ public class PlayerController : MonoBehaviourPun
         GameObject bulletObj = Instantiate(weapon.bulletPrefab,pos,Quaternion.identity);
         bulletObj.transform.forward=dir;
         Bullet bullet = bulletObj.GetComponent<Bullet>();
-        bullet.Initialize(weapon.daamage,weapon.range,id,photonView.IsMine);
+        bullet.Initialize(weapon.damage,weapon.range,id,photonView.IsMine);
         bullet.rb.linearVelocity=dir*bullet.GetSpeed();
     }
     [PunRPC]
