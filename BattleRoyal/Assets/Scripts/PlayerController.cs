@@ -113,4 +113,16 @@ public class PlayerController : MonoBehaviourPun
     {
         kills++;
     }
+    [PunRPC]
+    public void Heal(int amount)
+    {
+        curHp = Mathf.Clamp(curHp+amount,0,maxHp);
+        //update UI
+    }
+    [PunRPC]//PlayerWeapon RPC call
+    public void GiveAmmo(PlayerWeapon weapon, int amount)
+    {
+        weapon.curAmmo = Mathf.Clamp(weapon.curAmmo+amount,0,weapon.maxAmmo);
+        //update UI
+    }
 }
