@@ -29,9 +29,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         RoomOptions options = new RoomOptions();
         options.MaxPlayers=(byte)maxPlayers;
         PhotonNetwork.CreateRoom(roomName, options);
+        Debug.Log(PhotonNetwork.IsMasterClient);
     }
-    public void JoinRoom(string sceneName)
+    public void JoinRoom(string roomName)
     {
-        PhotonNetwork.LoadLevel(sceneName);
+        PhotonNetwork.JoinRoom(roomName);
+    }
+    public override void OnDisconnected(DisconnectCause d){
+        PhotonNetwork.LoadLevel("Menu");
+    }
+    public override void OnPlayerLeftRoom (Player otherPlayer){
+        GameManager.instance.alaivePlayers--;
+        GameUI.instance.UpdatePlayerInfoText();
+        if(PhotonNetwork.IsMasterClient){
+            GameManager.instance.CheckWinCondition();
+        }
     }
 }

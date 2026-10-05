@@ -9,10 +9,10 @@ public class GameManager : MonoBehaviourPun
     public PlayerController[] players;
     public Transform[] spawnPoints;
     public int alaivePlayers;
-
-    private int playersInGame;
     public float postGameTime;
 
+    private int playersInGame;
+    
     public static GameManager instance;
     void Awake(){
         instance=this;
@@ -22,13 +22,28 @@ public class GameManager : MonoBehaviourPun
         players = new PlayerController[PhotonNetwork.PlayerList.Length];
         alaivePlayers = players.Length;
         photonView.RPC("ImInGame",RpcTarget.AllBuffered);
+        CheckWinCondition();
     }
 
     public PlayerController GetPlayer(int id){
-        return players.First(x=>x.id==id);
+        foreach (PlayerController player in players)
+        {
+            if(player!=null&&player.id==id){
+                return player;
+            }
+        }
+        return null;
+        //return players.First(x=>x.id==id);
     }
-    public PlayerController GetPlayer(GameObject player){
-        return players.First(x=>x.gameObject==player);
+    public PlayerController GetPlayer(GameObject playerObj){
+        foreach (PlayerController player in players)
+        {
+            if(player!=null&&player.gameObject==playerObj){
+                return player;
+            }
+        }
+        return null;
+        //return players.First(x=>x.gameObject==player);
     }
 
     [PunRPC]
@@ -51,6 +66,7 @@ public class GameManager : MonoBehaviourPun
     [PunRPC]
     void WinGame(int winnerId)
     {
+        GameUI.instance.SetWinText(GetPlayer(winnerId).photonPlayer.NickName);
         Invoke("GoBackToMenu", postGameTime);
     }
     void GoBackToMenu()

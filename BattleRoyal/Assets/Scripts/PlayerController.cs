@@ -59,6 +59,8 @@ public class PlayerController : MonoBehaviourPun
         if(!photonView.IsMine){
             GetComponentInChildren<Camera>().gameObject.SetActive(false);
             rig.isKinematic=true;
+        } else {
+            GameUI.instance.Initialize(this);
         }
     }
     [PunRPC]
@@ -70,6 +72,7 @@ public class PlayerController : MonoBehaviourPun
         photonView.RPC("DamageFlash",RpcTarget.Others);
         if(curHp<=0)
             photonView.RPC("Die",RpcTarget.All);
+        GameUI.instance.UpdateHealthVar();
     }
     [PunRPC]
     void DamageFlash(){
@@ -105,24 +108,25 @@ public class PlayerController : MonoBehaviourPun
         GameObject bulletObj = Instantiate(weapon.bulletPrefab,pos,Quaternion.identity);
         bulletObj.transform.forward=dir;
         Bullet bullet = bulletObj.GetComponent<Bullet>();
-        bullet.Initialize(weapon.damage,weapon.range,id,photonView.IsMine);
+        bullet.Initialize(weapon.damage,weapon.bulletSpeed,id,photonView.IsMine);
         bullet.rb.linearVelocity=dir*bullet.GetSpeed();
     }
     [PunRPC]
     public void AddKill()
     {
         kills++;
+        GameUI.instance.UpdatePlayerInfoText();
     }
     [PunRPC]
     public void Heal(int amount)
     {
         curHp = Mathf.Clamp(curHp+amount,0,maxHp);
-        //update UI
+        GameUI.instance.UpdateHealthVar();
     }
     [PunRPC]//PlayerWeapon RPC call
     public void GiveAmmo(PlayerWeapon weapon, int amount)
     {
         weapon.curAmmo = Mathf.Clamp(weapon.curAmmo+amount,0,weapon.maxAmmo);
-        //update UI
+        GameUI.instance.UpdateAmmoText();
     }
 }

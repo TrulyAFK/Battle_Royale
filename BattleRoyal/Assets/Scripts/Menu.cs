@@ -79,6 +79,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     {
         NetworkManager.instance.CreateRoom(roomName.text);
         SetScreen(lobby);
+        Invoke("UpdateLobbyUI",1);
     }
     
     //lobby screen functions
@@ -96,7 +97,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         {
             playerListText.text += player.NickName + "\n";
         }
-        roomInfoText.text = "<b>Room Name</b>\n" + PhotonNetwork.CurrentRoom.Name;
+        roomInfoText.text = "<b>Room Name</b>\n";
     }
     public override void OnPlayerLeftRoom(Player player)
     {
