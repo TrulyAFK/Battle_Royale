@@ -56,6 +56,10 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     {
         createRoomButton.interactable = true;
         findRoomButton.interactable = true;
+
+        // room list updates are only sent while in the lobby
+        if (!PhotonNetwork.InLobby)
+            PhotonNetwork.JoinLobby();
     }
     public void Back()
     {
@@ -65,7 +69,10 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnPlayerNameValueChanged(TMP_InputField nameInput)
     {
         PhotonNetwork.NickName = nameInput.text;
+
+        Debug.Log("Player name changed to: " + PhotonNetwork.NickName);
     }
+
     public void OnCreateRoomButton()
     {
         SetScreen(createRoom);
@@ -88,17 +95,20 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         SetScreen(lobby);
         photonView.RPC("UpdateLobbyUI", RpcTarget.All);
     }
+
     [PunRPC]
     void UpdateLobbyUI()
     {
         startGameButton.interactable = PhotonNetwork.IsMasterClient;
         playerListText.text = "";
-        foreach (var player in PhotonNetwork.PlayerList)
+        foreach (Player player in PhotonNetwork.PlayerList)
         {
             playerListText.text += player.NickName + "\n";
+            Debug.Log(playerListText);
         }
-        roomInfoText.text = "<b>Room Name</b>\n";
+        roomInfoText.text = "<b>Room Name</b>\n" + PhotonNetwork.CurrentRoom.Name;;
     }
+
     public override void OnPlayerLeftRoom(Player player)
     {
         UpdateLobbyUI();
@@ -121,6 +131,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         {
             button.SetActive(false);
         }
+        Debug.Log("Room list count");
+        Debug.Log(roomList.Count);
         for(int x=0; x<roomList.Count; x++)
         {
             GameObject button = x>=roomButtons.Count ? CreateRoomButton() : roomButtons[x];
@@ -143,8 +155,13 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     {
         UpdateLobbyBrowserUI();
     }
-    public void onRoomListUpdate(List<RoomInfo> allRooms)
+
+    public override void OnRoomListUpdate(List<RoomInfo> allRooms)
     {
+        Debug.Log("OnRoomListUpdate called from Photon");
         roomList = allRooms;
+
+        if(lobbyBrowser.activeSelf)
+            UpdateLobbyBrowserUI();
     }
 }
