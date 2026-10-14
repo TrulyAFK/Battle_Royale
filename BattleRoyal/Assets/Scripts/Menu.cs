@@ -85,12 +85,12 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnCreateButton()
     {
         NetworkManager.instance.CreateRoom(roomName.text);
-        SetScreen(lobby);
-        Invoke("UpdateLobbyUI",1);
+        //SetScreen(lobby);
+        //Invoke("UpdateLobbyUI",1);
     }
     
     //lobby screen functions
-    public void OnJoinRoom()
+    public override void OnJoinedRoom()
     {
         SetScreen(lobby);
         photonView.RPC("UpdateLobbyUI", RpcTarget.All);
@@ -104,7 +104,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         foreach (Player player in PhotonNetwork.PlayerList)
         {
             playerListText.text += player.NickName + "\n";
-            Debug.Log(playerListText);
+            Debug.Log(playerListText.text);
         }
         roomInfoText.text = "<b>Room Name</b>\n" + PhotonNetwork.CurrentRoom.Name;;
     }
@@ -122,6 +122,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnLeaveRoomButton()
     {
         PhotonNetwork.LeaveRoom();
+        Debug.Log("LeftRoom");
         SetScreen(main);
     }
     //Lobby browser screen functions
@@ -129,6 +130,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     {
         foreach(GameObject button in roomButtons)
         {
+            Debug.Log("button");
             button.SetActive(false);
         }
         Debug.Log("Room list count");
@@ -139,6 +141,10 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             button.SetActive(true);
             button.transform.Find("RoomNameText").GetComponent<TextMeshProUGUI>().text = roomList[x].Name;
             button.transform.Find("PlayerCountText").GetComponent<TextMeshProUGUI>().text = roomList[x].PlayerCount + "/" + roomList[x].MaxPlayers;
+            Button buttonComp = button.GetComponent<Button>();
+            string roomName = roomList[x].Name;
+            buttonComp.onClick.RemoveAllListeners();
+            buttonComp.onClick.AddListener(()=>{OnJoinRoomButton(roomName);});
         }
     }
     GameObject CreateRoomButton()
@@ -150,6 +156,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnJoinRoomButton(string roomName)
     {
         NetworkManager.instance.JoinRoom(roomName);
+        //OnJoinRoom()
     }
     public void OnRefreshButton()
     {

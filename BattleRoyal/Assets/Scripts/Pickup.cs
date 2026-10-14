@@ -6,6 +6,11 @@ public enum PickupType
 }
 public class Pickup : MonoBehaviourPun
 {
+    public bool canRespawn=false;
+    public float time=10;
+    public float delayTime=10;
+
+
     public PickupType type;
     public int value;
     private void OnTriggerEnter(Collider other)
@@ -22,13 +27,27 @@ public class Pickup : MonoBehaviourPun
             {
                 player.photonView.RPC("GiveAmmo", player.photonPlayer, player.weapon,value);
             }
-            photonView.RPC("DestroyPickup", RpcTarget.AllBuffered);
+            if(!canRespawn){
+                photonView.RPC("DestroyPickup", RpcTarget.AllBuffered);
+            } else {
+                photonView.RPC("Respawn",RpcTarget.AllBuffered);
+            }
+            
         }
     }
     [PunRPC]
     public void DestroyPickup()
-    {
+    {   
         Destroy(gameObject);
+    }
+    [PunRPC]
+    public  async void Respawn(){
+        this.gameObject.SetActive(false);
+        Debug.Log("No Ammo, starting respawn");
+        await Awaitable.WaitForSecondsAsync(15);
+        time=delayTime;
+        this.gameObject.SetActive(true);
+        Debug.Log("Ammo respawned");
     }
 }
 

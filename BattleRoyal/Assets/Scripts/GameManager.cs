@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviourPun
 
     private int playersInGame;
     
+
+
     public static GameManager instance;
     void Awake(){
         instance=this;
