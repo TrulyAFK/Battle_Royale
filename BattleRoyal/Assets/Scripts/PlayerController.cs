@@ -124,7 +124,7 @@ public class PlayerController : MonoBehaviourPun
         GameUI.instance.UpdateHealthVar();
     }
     [PunRPC]//PlayerWeapon RPC call
-    public void GiveAmmo(PlayerWeapon weapon, int amount)
+    public void GiveAmmo(int amount)
     {
         weapon.curAmmo = Mathf.Clamp(weapon.curAmmo+amount,0,weapon.maxAmmo);
         GameUI.instance.UpdateAmmoText();

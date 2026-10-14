@@ -25,7 +25,7 @@ public class Pickup : MonoBehaviourPun
                 player.photonView.RPC("Heal", player.photonPlayer, value);
             } else if(type == PickupType.Ammo)
             {
-                player.photonView.RPC("GiveAmmo", player.photonPlayer, player.weapon,value);
+                player.photonView.RPC("GiveAmmo", player.photonPlayer,value);
             }
             if(!canRespawn){
                 photonView.RPC("DestroyPickup", RpcTarget.AllBuffered);
